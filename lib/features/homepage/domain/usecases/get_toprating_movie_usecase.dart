@@ -7,7 +7,9 @@ import 'package:movie_app/features/homepage/domain/repositories/movie_repositori
 
 class GetTopRatedMovieUseCase implements UseCase<DataState<List<MovieEntities>>, void>{
 
-  late final MovieRepositories _movieRepositories;
+   final MovieRepositories _movieRepositories;
+   GetTopRatedMovieUseCase(this._movieRepositories);
+
   @override
   Future<DataState<List<MovieEntities>>> call({void params}) {
     return _movieRepositories.getTopRatedMovies();
