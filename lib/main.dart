@@ -4,7 +4,8 @@ import 'package:movie_app/config/theme/app_themes.dart';
 import 'package:movie_app/features/homepage/presentation/bloc/movie/remote/remote_movie_bloc.dart';
 import 'package:movie_app/features/homepage/presentation/bloc/movie/remote/remote_movie_events.dart';
 import 'package:movie_app/features/homepage/presentation/views/home_page.dart';
-import 'package:movie_app/injector_container.dart';
+
+import 'core/di.dart';
 
 void main() async {
 
@@ -15,7 +16,8 @@ void main() async {
 
 
 // Configure injecction
-  await initializedDependency();
+
+  ServiceLocator().init();
   runApp(const MyApp());
 }
 
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RemoteMovieBloc>(
-      create: (context) => sl()
+      create: (context) => Sl()
         ..add(GetLatestEvent())
         ..add(GetTopRatingEvent())
         ..add(GetPopularEvent())

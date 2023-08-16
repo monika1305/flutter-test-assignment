@@ -10,6 +10,6 @@ abstract class MovieRepositories{
   Future<DataState<List<MovieEntities>>> getUpComingMovies();
   Future<DataState<List<MovieEntities>>> getLatestMovies();
 
-  // Future<DataState<MovieEntities>> getDetailsMovies(int id);
+  Future<DataState<MovieEntities>> getDetailsMovies(int id);
 
 }

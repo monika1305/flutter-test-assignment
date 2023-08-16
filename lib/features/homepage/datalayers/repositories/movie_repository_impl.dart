@@ -15,11 +15,34 @@ class MovieRepositoryImpl implements MovieRepositories{
   MovieRepositoryImpl(this._movieApiService);
 
 
+
   @override
-  Future<DataState<MovieModel>> getDetailsMovies(int id) {
-    // TODO: implement getDetailsMovies
-    throw UnimplementedError();
+  Future<DataState<MovieModel>> getDetailsMovies(int id) async {
+    try{
+      final httpResponse = await _movieApiService.getDetailMovieById(
+        language: language,
+        id: id,
+        accept: accept,
+        authorization: authorization,
+      );
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data as MovieModel);
+      }
+      else {
+        return DataFailed(
+            DioException(
+                error: httpResponse.response.statusMessage,
+                response: httpResponse.response,
+                type: DioExceptionType.badResponse,
+                requestOptions: httpResponse.response.requestOptions)
+        );
+      }
+    } on DioException catch(e){
+      return DataFailed(e);
+    }
   }
+
 
   @override
   Future<DataState<List<MovieModel>>> getPopularMovies() async {
