@@ -45,12 +45,39 @@ class MovieRepositoryImpl implements MovieRepositories{
 
 
   @override
+  Future<DataState<List<MovieModel>>> getLatestMovies() async {
+
+    try{
+      final httpResponse = await _movieApiService.getLatestMovies(
+        api_key: api_key,
+        language: language,
+        accept: accept,
+      );
+
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data);
+      }
+      else {
+        return DataFailed(
+            DioException(
+                error: httpResponse.response.statusMessage,
+                response: httpResponse.response,
+                type: DioExceptionType.badResponse,
+                requestOptions: httpResponse.response.requestOptions)
+        );
+      }
+    } on DioException catch(e){
+      return DataFailed(e);
+    }
+  }
+
+  @override
   Future<DataState<List<MovieModel>>> getPopularMovies() async {
     try{
       final httpResponse = await _movieApiService.getPopularMovies(
+        api_key: api_key,
         language: language,
         accept: accept,
-        authorization: authorization,
       );
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
@@ -74,9 +101,9 @@ class MovieRepositoryImpl implements MovieRepositories{
   Future<DataState<List<MovieModel>>> getTopRatedMovies() async {
     try{
       final httpResponse = await _movieApiService.getTopRatedMovies(
+        api_key: api_key,
         language: language,
         accept: accept,
-        authorization: authorization,
       );
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {
@@ -97,39 +124,12 @@ class MovieRepositoryImpl implements MovieRepositories{
   }
 
   @override
-  Future<DataState<List<MovieModel>>> getLatestMovies() async {
-
-  try{
-    final httpResponse = await _movieApiService.getLatestMovies(
-      language: language,
-      accept: accept,
-      authorization: authorization,
-    );
-
-    if (httpResponse.response.statusCode == HttpStatus.ok) {
-      return DataSuccess(httpResponse.data);
-    }
-    else {
-      return DataFailed(
-          DioException(
-              error: httpResponse.response.statusMessage,
-              response: httpResponse.response,
-              type: DioExceptionType.badResponse,
-              requestOptions: httpResponse.response.requestOptions)
-      );
-    }
-  } on DioException catch(e){
-    return DataFailed(e);
-  }
-  }
-
-  @override
   Future<DataState<List<MovieModel>>> getUpComingMovies() async {
     try{
       final httpResponse = await _movieApiService.getUpComingMovies(
+        api_key: api_key,
         language: language,
         accept: accept,
-        authorization: authorization,
       );
 
       if (httpResponse.response.statusCode == HttpStatus.ok) {

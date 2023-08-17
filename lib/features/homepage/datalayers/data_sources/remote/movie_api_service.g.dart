@@ -13,7 +13,7 @@ class _MovieApiService implements MovieApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://api.themoviedb.org/3';
+    baseUrl ??= 'https://api.themoviedb.org/3/movie';
   }
 
   final Dio _dio;
@@ -22,20 +22,21 @@ class _MovieApiService implements MovieApiService {
 
   @override
   Future<HttpResponse<List<MovieModel>>> getLatestMovies({
+    String? api_key,
     String? language,
     String? accept,
-    String? authorization,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'api_key': api_key,
       r'language': language,
       r'Accept': accept,
-      r'Authorization': authorization,
     };
+    // print('getLatestMovies ${queryParameters.toString()}');
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String,dynamic>>(
         _setStreamType<HttpResponse<List<MovieModel>>>(Options(
       method: 'GET',
       headers: _headers,
@@ -52,29 +53,39 @@ class _MovieApiService implements MovieApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => MovieModel.fromJson(i as Map<String, dynamic>))
+    // print('getLatestMovies ${_result.data.toString()}');
+    // print('getLatestMovies ${_result.data!['results'].toString()}');
+
+    var value = _result.data!['results']
+        .map((i) => MovieModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    final httpResponse = HttpResponse(value, _result);
+    // print('getLatestMovies value ${value.toString()}');
+
+    /// for casting
+    List<MovieModel> latestList = value.cast<MovieModel>();
+    print('getLatestMovies value ${latestList.length.toString()}');
+
+    final httpResponse = HttpResponse(latestList, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<List<MovieModel>>> getPopularMovies({
+    String? api_key,
     String? language,
     String? accept,
-    String? authorization,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'api_key': api_key,
       r'language': language,
       r'Accept': accept,
-      r'Authorization': authorization,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String,dynamic>>(
         _setStreamType<HttpResponse<List<MovieModel>>>(Options(
       method: 'GET',
       headers: _headers,
@@ -91,29 +102,38 @@ class _MovieApiService implements MovieApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => MovieModel.fromJson(i as Map<String, dynamic>))
+    // print('getPopularMovies ${_result.data.toString()}');
+    // print('getPopularMovies ${_result.data!['results'].toString()}');
+
+    var value = _result.data!['results']
+        .map((i) => MovieModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    final httpResponse = HttpResponse(value, _result);
+    // print('getPopularMovies value ${value.toString()}');
+
+    /// for casting
+    List<MovieModel> popularList = value.cast<MovieModel>();
+    print('getPopularMovies value ${popularList.length.toString()}');
+
+    final httpResponse = HttpResponse(popularList, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<List<MovieModel>>> getTopRatedMovies({
+    String? api_key,
     String? language,
     String? accept,
-    String? authorization,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'api_key': api_key,
       r'language': language,
       r'Accept': accept,
-      r'Authorization': authorization,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
+    final _result = await _dio.fetch<Map<String,dynamic>>(
         _setStreamType<HttpResponse<List<MovieModel>>>(Options(
       method: 'GET',
       headers: _headers,
@@ -130,29 +150,39 @@ class _MovieApiService implements MovieApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => MovieModel.fromJson(i as Map<String, dynamic>))
+
+    // print('getTopRatedMovies ${_result.data.toString()}');
+    // print('getTopRatedMovies ${_result.data!['results'].toString()}');
+
+    var value = _result.data!['results']
+        .map((i) => MovieModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    final httpResponse = HttpResponse(value, _result);
+    // print('getTopRatedMovies value ${value.toString()}');
+
+    /// for casting
+    List<MovieModel> topRatedList = value.cast<MovieModel>();
+    print('getTopRatedMovies value ${topRatedList.length.toString()}');
+
+    final httpResponse = HttpResponse(topRatedList, _result);
     return httpResponse;
   }
 
   @override
   Future<HttpResponse<List<MovieModel>>> getUpComingMovies({
+    String? api_key,
     String? language,
     String? accept,
-    String? authorization,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'api_key': api_key,
       r'language': language,
       r'Accept': accept,
-      r'Authorization': authorization,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
+    final _result = await _dio.fetch<Map<String,dynamic>>(
         _setStreamType<HttpResponse<List<MovieModel>>>(Options(
       method: 'GET',
       headers: _headers,
@@ -169,15 +199,24 @@ class _MovieApiService implements MovieApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => MovieModel.fromJson(i as Map<String, dynamic>))
+    // print('getUpComingMovies ${_result.data.toString()}');
+    // print('getUpComingMovies ${_result.data!['results'].toString()}');
+
+    var value = _result.data!['results']
+        .map((i) => MovieModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    final httpResponse = HttpResponse(value, _result);
+    // print('getUpComingMovies value ${value.toString()}');
+
+    /// for casting
+    List<MovieModel> upComingList = value.cast<MovieModel>();
+    print('getUpComingMovies value ${upComingList.length.toString()}');
+
+    final httpResponse = HttpResponse(upComingList, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<List<MovieModel>>> getDetailMovieById({
+  Future<HttpResponse<MovieModel>> getDetailMovieById({
     String? language,
     int? id,
     String? accept,
@@ -193,8 +232,8 @@ class _MovieApiService implements MovieApiService {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<HttpResponse<List<MovieModel>>>(Options(
+    final _result = await _dio.fetch<Map<String,dynamic>>(
+        _setStreamType<HttpResponse<MovieModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -210,7 +249,7 @@ class _MovieApiService implements MovieApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    MovieModel value = _result.data!['']
         .map((dynamic i) => MovieModel.fromJson(i as Map<String, dynamic>))
         .toList();
     final httpResponse = HttpResponse(value, _result);

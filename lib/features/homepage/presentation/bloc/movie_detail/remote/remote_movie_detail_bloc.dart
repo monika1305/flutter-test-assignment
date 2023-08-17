@@ -23,6 +23,7 @@ class RemoteMovieDetailBloc extends Bloc<RemoteMovieDetailEvents, RemoteMovieDet
             );
           }
           if (dataState is DataFailed) {
+            print('RMBloc details----- Error ${dataState.error?.message}');
             emit(
                 RemoteMovieDetailStateError(dataState.error!)
             );

@@ -22,7 +22,6 @@ class ServiceLocator {
 
     // Dependencies
     Sl.registerSingleton<MovieApiService>(MovieApiService(Sl()));
-    Sl.registerSingleton<MovieRepositories>(MovieRepositoryImpl(Sl()));
 
     // usecases
     Sl.registerLazySingleton<GetPopularMovieUseCase>(() =>
