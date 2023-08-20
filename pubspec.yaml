@@ -50,6 +50,10 @@ dependencies:
   # cached image
   cached_network_image: ^3.2.3
 
+  conditional_builder_null_safety: ^0.0.6
+  flutter_carousel_slider:
+  carousel_slider: ^4.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -70,6 +74,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/image/
 
   fonts:
     - family: Muli

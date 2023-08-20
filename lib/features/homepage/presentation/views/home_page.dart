@@ -1,7 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/features/homepage/datalayers/models/movie_model.dart';
+import 'package:movie_app/features/homepage/domain/entities/movie_entities.dart';
 import 'package:movie_app/features/homepage/presentation/bloc/movie/remote/remote_movie_bloc.dart';
 import 'package:movie_app/features/homepage/presentation/bloc/movie/remote/remote_movie_state.dart';
+import 'package:movie_app/features/homepage/presentation/widget/latest_widget.dart';
+
+import '../../../../config/constant/constant.dart';
+import '../widget/expansion.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,7 +18,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppbar(),
-      body: _buildBody(),
+      body: LatestWidget(),
     );
 
   }
@@ -26,22 +34,60 @@ class HomePage extends StatelessWidget {
  Widget _buildBody(){
     return BlocBuilder<RemoteMovieBloc, RemoteMovieState>(
         builder: (_,state) {
-          if(state is RemoteMovieStateLoading){
-            return const Center(child: CircularProgressIndicator());
-          } if(state is RemoteMovieStateError){
-            return const Center(child: Icon(Icons.refresh));
-          } if(state is RemoteMovieStateDone){
-            return ListView.builder(
-              itemCount: state.movies!.length,
-                itemBuilder: (context, index){
-                return ListTile(
-                  title: Text("${index}"),
+         return ConditionalBuilder(
+              condition: state.latestData.isNotEmpty &&
+              state.popularData.isNotEmpty &&
+              state.topratedData.isNotEmpty &&
+              state.upcomingData.isNotEmpty,
+              builder: (context) {
+
+                return  SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      // LatestWidget(),
+                      ExpansionTile(
+                        title: const Text(
+                      'Latest',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    maintainState: true,
+                    children: _getChildren(state.latestData.length, state.latestData),  // <------ add this
+                  ),
+
+
+                     ],
+                  ),
                 );
-                },
-            );
-          }
-          return const SizedBox();
-        },
+
+
+          }, fallback: (context) {
+            return Center(child: CircularProgressIndicator());
+          },
     );
-  }
+     },
+    );
+ }
+  List<Widget> _getChildren(int count, List<MovieEntities> arrData) =>
+      List<Widget>.generate(
+        arrData.length,
+            (i) => Card(
+          child: ListTile(
+            //**** IMAGE LOADING WITH PLACEHOLDER ****/
+            leading: ClipRRect(
+              child: CachedNetworkImage(
+                imageUrl: ConstantValueApiGet.imagePath(arrData[i].PosterPath),
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                fit: BoxFit.cover,
+                height: 60,
+                width: 60,
+              ),
+            ),
+            title: Text(arrData[i].Title,
+                style: const TextStyle(fontWeight: FontWeight.w500)),
+            subtitle: Text(arrData[i].originalTitle),
+
+          ),
+        ),
+      );
 }

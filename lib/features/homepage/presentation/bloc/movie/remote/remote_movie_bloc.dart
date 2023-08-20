@@ -21,23 +21,27 @@ class RemoteMovieBloc extends Bloc<RemoteMovieEvents, RemoteMovieState> {
   RemoteMovieBloc(this._getLatestMovieUseCase,
       this._getPopularMovieUseCase,
       this._getTopRatedMovieUseCase,
-      this._getUpcomingMovieUseCase,) : super(RemoteMovieStateLoading()) {
+      this._getUpcomingMovieUseCase,) : super(RemoteMovieState()) {
+
+
     on<GetLatestEvent>(
             (GetLatestEvent events, Emitter<RemoteMovieState> emit) async {
           final dataState = await _getLatestMovieUseCase.call();
 
           if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
             emit(
-                RemoteMovieStateDone(dataState.data!)
+                state.copyWith(
+                    latestData: dataState.data, enumRequestlatest: EnumRequest.loded)
             );
           }
           if (dataState is DataFailed) {
             print('RMBloc latest message----- Error ${dataState.error?.message}');
-            print('RMBloc latest response----- Error ${dataState.error?.response}');
-            print('RMBloc latest error----- Error ${dataState.error?.error.toString()}');
-
+            // print('RMBloc latest response----- Error ${dataState.error?.response}');
+            // print('RMBloc latest error----- Error ${dataState.error?.error.toString()}');
+            //
             emit(
-                RemoteMovieStateError(dataState.error!)
+                state.copyWith(
+                    enumRequestlatest: EnumRequest.error, messagelatest: dataState.error?.message)
             );
           }
         }
@@ -49,13 +53,15 @@ class RemoteMovieBloc extends Bloc<RemoteMovieEvents, RemoteMovieState> {
 
           if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
             emit(
-                RemoteMovieStateDone(dataState.data!)
+                state.copyWith(
+                    popularData: dataState.data, enumRequestPopular: EnumRequest.loded)
             );
           }
           if (dataState is DataFailed) {
             print('RMBloc popular----- Error ${dataState.error?.message}');
             emit(
-                RemoteMovieStateError(dataState.error!)
+                state.copyWith(
+                    enumRequestPopular: EnumRequest.error, messagePopular: dataState.error?.message)
             );
           }
         }
@@ -67,14 +73,15 @@ class RemoteMovieBloc extends Bloc<RemoteMovieEvents, RemoteMovieState> {
 
           if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
             emit(
-                RemoteMovieStateDone(dataState.data!)
+                state.copyWith(
+                    topratedData: dataState.data, enumRequesttoprated: EnumRequest.loded)
             );
           }
           if (dataState is DataFailed) {
             print('RMBloc topRating----- Error ${dataState.error?.message}');
-
             emit(
-                RemoteMovieStateError(dataState.error!)
+                state.copyWith(
+                    enumRequesttoprated: EnumRequest.error, messagetoprated: dataState.error?.message)
             );
           }
         }
@@ -86,14 +93,16 @@ class RemoteMovieBloc extends Bloc<RemoteMovieEvents, RemoteMovieState> {
 
           if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
             emit(
-                RemoteMovieStateDone(dataState.data!)
+                state.copyWith(
+                    upcomingData: dataState.data, enumRequestupcoming: EnumRequest.loded)
             );
           }
           if (dataState is DataFailed) {
             print('RMBloc upcomming----- Error ${dataState.error?.message}');
 
             emit(
-                RemoteMovieStateError(dataState.error!)
+                state.copyWith(
+                    enumRequestupcoming: EnumRequest.error, messageupcoming: dataState.error?.message)
             );
           }
         }
