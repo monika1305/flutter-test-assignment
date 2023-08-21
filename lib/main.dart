@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/config/theme/app_themes.dart';
-import 'package:movie_app/features/homepage/presentation/bloc/movie/remote/remote_movie_bloc.dart';
-import 'package:movie_app/features/homepage/presentation/bloc/movie/remote/remote_movie_events.dart';
-import 'package:movie_app/features/homepage/presentation/views/home_page.dart';
+import 'package:movie_app/features/movielist_n_details/presentation/bloc/movie/remote/remote_movie_bloc.dart';
+import 'package:movie_app/features/movielist_n_details/presentation/bloc/movie/remote/remote_movie_events.dart';
+import 'package:movie_app/features/movielist_n_details/presentation/views/home_page.dart';
 
 import 'core/di.dart';
 

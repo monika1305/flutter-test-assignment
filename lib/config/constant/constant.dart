@@ -8,4 +8,8 @@
 
  class ConstantValueApiGet{
   static String imagePath(String path) =>'https://image.tmdb.org/t/p/w500$path';
+  static String DetailsMovie(int id) => '$movieApiBaseUrl/$id?api_key=$api_key';
+  static String VideoMovie(int id) => '$movieApiBaseUrl/$id/videos?api_key=$api_key';
+
+
  }

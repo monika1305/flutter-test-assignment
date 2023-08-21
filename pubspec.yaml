@@ -52,11 +52,12 @@ dependencies:
 
   conditional_builder_null_safety: ^0.0.6
   flutter_carousel_slider:
-  carousel_slider: ^4.1.1
+  url_launcher: ^6.1.12
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.11.0"
   retrofit_generator: ^7.0.8
   floor_generator: ^1.4.2
   build_runner: 2.4.6
